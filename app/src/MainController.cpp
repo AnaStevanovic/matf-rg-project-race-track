@@ -34,6 +34,20 @@ void MainController::poll_events() {
         m_cursor_enabled = !m_cursor_enabled;
         platform->set_enable_cursor(m_cursor_enabled);
     }
+    if (platform->key(engine::platform::KEY_L).state() == engine::platform::Key::State::JustPressed) {
+        m_lamps_enabled = !m_lamps_enabled;
+    }
+    if (platform->key(engine::platform::KEY_M).state() == engine::platform::Key::State::JustPressed) {
+        m_moon_enabled = !m_moon_enabled;
+    }
+
+    if (platform->key(engine::platform::KEY_UP).state() == engine::platform::Key::State::Pressed) {
+        m_lamp_intensity += 0.02f;
+    }
+    if (platform->key(engine::platform::KEY_DOWN).state() == engine::platform::Key::State::Pressed) {
+        m_lamp_intensity -= 0.02f;
+    }
+    if (m_lamp_intensity < 0.0f) m_lamp_intensity = 0.0f;
 }
 
 void MainController::update() {
@@ -97,11 +111,12 @@ void MainController::draw_ferrari() {
     shader->set_mat4("model", model);
 
     shader->set_vec3("viewPos", graphics->camera()->Position);
+    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
 
     shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
-    shader->set_vec3("dirLight.ambient",glm::vec3(0.10f));
-    shader->set_vec3("dirLight.diffuse",glm::vec3(0.35f));
-    shader->set_vec3("dirLight.specular",glm::vec3(0.4f));
+    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.specular", m_moon_enabled ? glm::vec3(0.4f) : glm::vec3(0.0f));
 
 
 
@@ -111,12 +126,12 @@ void MainController::draw_ferrari() {
 
         shader->set_vec3(prefix + ".position",light_position);
         shader->set_vec3(prefix + ".ambient",glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".diffuse",glm::vec3(1.2f));
-        shader->set_vec3(prefix + ".specular",glm::vec3(1.2f));
+        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
+        shader->set_vec3(prefix + ".specular", m_lamps_enabled ? glm::vec3(1.2f) : glm::vec3(0.0f));
 
         shader->set_float(prefix + ".constant",1.0f);
-        shader->set_float(prefix + ".linear",0.09f);
-        shader->set_float(prefix + ".quadratic",0.032f);
+        shader->set_float(prefix + ".linear",0.07f);
+        shader->set_float(prefix + ".quadratic",0.017f);
     }
 
     ferrari->draw(shader);
@@ -132,18 +147,21 @@ void MainController::draw_track() {
     shader->use();
 
     shader->set_bool("useTexture", false);
-    shader->set_vec3("objectColor",glm::vec3(0.15f, 0.15f, 0.15f));
+    shader->set_vec3("objectColor",glm::vec3(0.22f, 0.22f, 0.22f));
 
     shader->set_mat4("projection",graphics->projection_matrix());
     shader->set_mat4("view",graphics->camera()->view_matrix());
     shader->set_mat4("model",glm::mat4(1.0f));
 
     shader->set_vec3("viewPos",graphics->camera()->Position);
+    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
+
 
     shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
-    shader->set_vec3("dirLight.ambient",glm::vec3(0.10f));
-    shader->set_vec3("dirLight.diffuse",glm::vec3(0.35f));
-    shader->set_vec3("dirLight.specular",glm::vec3(0.1f));
+
+    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.specular", m_moon_enabled ? glm::vec3(0.1f) : glm::vec3(0.0f));
 
     for (int i = 0; i < NUM_LAMPS; ++i) {
         const std::string prefix = "pointLights[" + std::to_string(i) + "]";
@@ -151,12 +169,12 @@ void MainController::draw_track() {
 
         shader->set_vec3(prefix + ".position",light_position);
         shader->set_vec3(prefix + ".ambient",glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".diffuse",glm::vec3(1.2f));
-        shader->set_vec3(prefix + ".specular",glm::vec3(0.2f));
+        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
+        shader->set_vec3(prefix + ".specular", m_lamps_enabled ? glm::vec3(0.2f) : glm::vec3(0.0f));
 
         shader->set_float(prefix + ".constant",1.0f);
-        shader->set_float(prefix + ".linear",0.09f);
-        shader->set_float(prefix + ".quadratic",0.032f);
+        shader->set_float(prefix + ".linear",0.07f);
+        shader->set_float(prefix + ".quadratic",0.017f);
     }
 
     track->draw(shader);
@@ -166,15 +184,38 @@ void MainController::draw_track_lines() {
     auto graphics =engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources =engine::core::Controller::get<engine::resources::ResourcesController>();
 
-    auto shader = resources->shader("uniform_color");
+    auto shader = resources->shader("lighting");
     auto strip = resources->model("strip");
 
     shader->use();
 
+    shader->set_bool("useTexture", false);
+    shader->set_vec3("objectColor", glm::vec3(0.8f));
+
     shader->set_mat4("projection",graphics->projection_matrix());
     shader->set_mat4("view",graphics->camera()->view_matrix());
 
-    shader->set_vec4("color",glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    shader->set_vec3("viewPos", graphics->camera()->Position);
+    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
+
+    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
+    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.specular",glm::vec3(0.0f));
+
+    for (int i = 0; i < NUM_LAMPS; ++i) {
+        const std::string prefix = "pointLights[" + std::to_string(i) + "]";
+        const glm::vec3 light_position = m_lamp_positions[i] + glm::vec3(0.0f, m_lamp_light_height, 0.0f);
+
+        shader->set_vec3(prefix + ".position", light_position);
+        shader->set_vec3(prefix + ".ambient", glm::vec3(0.0f));
+        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
+        shader->set_vec3(prefix + ".specular", glm::vec3(0.0f));
+
+        shader->set_float(prefix + ".constant", 1.0f);
+        shader->set_float(prefix + ".linear", 0.07f);
+        shader->set_float(prefix + ".quadratic", 0.017f);
+    }
 
     // Leva ivica staze
     auto left = glm::mat4(1.0f);
@@ -205,13 +246,36 @@ void MainController::draw_lamps() {
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
 
-    auto shader = resources->shader("basic");
+    auto shader = resources->shader("lighting");
     auto lamp = resources->model("lamp");
 
     shader->use();
+    shader->set_bool("useTexture", true);
+    
+    shader->set_vec3("viewPos", graphics->camera()->Position);
+    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
 
     shader->set_mat4("projection", graphics->projection_matrix());
     shader->set_mat4("view", graphics->camera()->view_matrix());
+
+    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
+    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
+    shader->set_vec3("dirLight.specular",m_moon_enabled? glm::vec3(0.2f): glm::vec3(0.0f));
+
+    for (int i = 0; i < NUM_LAMPS; ++i) {
+        const std::string prefix = "pointLights[" + std::to_string(i) + "]";
+        const glm::vec3 light_position = m_lamp_positions[i] + glm::vec3(0.0f, m_lamp_light_height, 0.0f);
+
+        shader->set_vec3(prefix + ".position", light_position);
+        shader->set_vec3(prefix + ".ambient", glm::vec3(0.0f));
+        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
+        shader->set_vec3(prefix + ".specular",m_lamps_enabled? glm::vec3(0.3f): glm::vec3(0.0f));
+
+        shader->set_float(prefix + ".constant", 1.0f);
+        shader->set_float(prefix + ".linear", 0.07f);
+        shader->set_float(prefix + ".quadratic", 0.017f);
+    }
 
     for (const auto& position : m_lamp_positions) {
         glm::mat4 model(1.0f);

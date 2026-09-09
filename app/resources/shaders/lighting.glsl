@@ -60,6 +60,8 @@ uniform sampler2D texture_diffuse1;
 uniform bool useTexture;
 uniform vec3 objectColor;
 
+uniform vec3  sceneAmbient;
+
 vec3 calculatePointLight(PointLight light, vec3 norm, vec3 fragPos, vec3 viewDir, vec3 baseColor) {
     vec3 lightDir = normalize(light.position - fragPos);
     float diff = max(dot(norm, lightDir), 0.0);
@@ -103,7 +105,7 @@ void main() {
         pointLighting +=  calculatePointLight(pointLights[i], norm, FragPos, viewDir, baseColor);
     }
 
-    vec3 result = ambient + diffuse + specular + pointLighting;
+    vec3 result = sceneAmbient * baseColor + ambient + diffuse + specular + pointLighting;
 
     FragColor = vec4(result, 1.0);
 }

@@ -33,6 +33,11 @@ private:
     };
 
     float m_lamp_light_height = 8.0f;
+
+    bool m_lamps_enabled = true;
+    bool m_moon_enabled = true;
+
+    float m_lamp_intensity = 2.0f;
 };
 
 }
