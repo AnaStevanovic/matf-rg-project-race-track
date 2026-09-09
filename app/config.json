@@ -12,6 +12,10 @@
       "strip": {
         "path": "track/strip.obj",
         "flip_uvs": false
+      },
+      "lamp": {
+        "path": "lamp/scene.gltf",
+        "flip_uvs": true
       }
     }
   },
