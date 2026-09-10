@@ -2,9 +2,8 @@
 // Created by ana on 9/7/26.
 //
 #include "MainController.hpp"
-
+#include "LightingController.hpp"
 #include "engine/graphics/GraphicsController.hpp"
-#include <string>
 #include <engine/core/Engine.hpp>
 
 namespace app {
@@ -34,20 +33,6 @@ void MainController::poll_events() {
         m_cursor_enabled = !m_cursor_enabled;
         platform->set_enable_cursor(m_cursor_enabled);
     }
-    if (platform->key(engine::platform::KEY_L).state() == engine::platform::Key::State::JustPressed) {
-        m_lamps_enabled = !m_lamps_enabled;
-    }
-    if (platform->key(engine::platform::KEY_M).state() == engine::platform::Key::State::JustPressed) {
-        m_moon_enabled = !m_moon_enabled;
-    }
-
-    if (platform->key(engine::platform::KEY_UP).state() == engine::platform::Key::State::Pressed) {
-        m_lamp_intensity += 0.02f;
-    }
-    if (platform->key(engine::platform::KEY_DOWN).state() == engine::platform::Key::State::Pressed) {
-        m_lamp_intensity -= 0.02f;
-    }
-    if (m_lamp_intensity < 0.0f) m_lamp_intensity = 0.0f;
 }
 
 void MainController::update() {
@@ -96,6 +81,7 @@ void MainController::update_camera() {
 void MainController::draw_ferrari() {
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto lighting = engine::core::Controller::get<LightingController>();
 
     auto shader = resources->shader("lighting");
     auto ferrari = resources->model("ferrari");
@@ -110,29 +96,7 @@ void MainController::draw_ferrari() {
     model = glm::scale(model,glm::vec3(1.5f));
     shader->set_mat4("model", model);
 
-    shader->set_vec3("viewPos", graphics->camera()->Position);
-    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
-
-    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
-    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.specular", m_moon_enabled ? glm::vec3(0.4f) : glm::vec3(0.0f));
-
-
-
-    for (int i = 0; i < NUM_LAMPS; ++i) {
-        const std::string prefix = "pointLights[" + std::to_string(i) + "]";
-        const glm::vec3 light_position = m_lamp_positions[i] + glm::vec3(0.0f, m_lamp_light_height, 0.0f);
-
-        shader->set_vec3(prefix + ".position",light_position);
-        shader->set_vec3(prefix + ".ambient",glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".specular", m_lamps_enabled ? glm::vec3(1.2f) : glm::vec3(0.0f));
-
-        shader->set_float(prefix + ".constant",1.0f);
-        shader->set_float(prefix + ".linear",0.07f);
-        shader->set_float(prefix + ".quadratic",0.017f);
-    }
+    lighting->apply_lighting(0.4f, 1.2f);
 
     ferrari->draw(shader);
 }
@@ -140,6 +104,7 @@ void MainController::draw_ferrari() {
 void MainController::draw_track() {
     auto graphics =engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources =engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto lighting = engine::core::Controller::get<LightingController>();
 
     auto shader = resources->shader("lighting");
     auto track = resources->model("track");
@@ -153,29 +118,7 @@ void MainController::draw_track() {
     shader->set_mat4("view",graphics->camera()->view_matrix());
     shader->set_mat4("model",glm::mat4(1.0f));
 
-    shader->set_vec3("viewPos",graphics->camera()->Position);
-    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
-
-
-    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
-
-    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.specular", m_moon_enabled ? glm::vec3(0.1f) : glm::vec3(0.0f));
-
-    for (int i = 0; i < NUM_LAMPS; ++i) {
-        const std::string prefix = "pointLights[" + std::to_string(i) + "]";
-        const glm::vec3 light_position = m_lamp_positions[i] + glm::vec3(0.0f, m_lamp_light_height, 0.0f);
-
-        shader->set_vec3(prefix + ".position",light_position);
-        shader->set_vec3(prefix + ".ambient",glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".specular", m_lamps_enabled ? glm::vec3(0.2f) : glm::vec3(0.0f));
-
-        shader->set_float(prefix + ".constant",1.0f);
-        shader->set_float(prefix + ".linear",0.07f);
-        shader->set_float(prefix + ".quadratic",0.017f);
-    }
+    lighting->apply_lighting(0.1f, 0.2f);
 
     track->draw(shader);
 }
@@ -183,6 +126,7 @@ void MainController::draw_track() {
 void MainController::draw_track_lines() {
     auto graphics =engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources =engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto lighting = engine::core::Controller::get<LightingController>();
 
     auto shader = resources->shader("lighting");
     auto strip = resources->model("strip");
@@ -195,27 +139,7 @@ void MainController::draw_track_lines() {
     shader->set_mat4("projection",graphics->projection_matrix());
     shader->set_mat4("view",graphics->camera()->view_matrix());
 
-    shader->set_vec3("viewPos", graphics->camera()->Position);
-    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
-
-    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
-    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.specular",glm::vec3(0.0f));
-
-    for (int i = 0; i < NUM_LAMPS; ++i) {
-        const std::string prefix = "pointLights[" + std::to_string(i) + "]";
-        const glm::vec3 light_position = m_lamp_positions[i] + glm::vec3(0.0f, m_lamp_light_height, 0.0f);
-
-        shader->set_vec3(prefix + ".position", light_position);
-        shader->set_vec3(prefix + ".ambient", glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".specular", glm::vec3(0.0f));
-
-        shader->set_float(prefix + ".constant", 1.0f);
-        shader->set_float(prefix + ".linear", 0.07f);
-        shader->set_float(prefix + ".quadratic", 0.017f);
-    }
+    lighting->apply_lighting(0.0f, 0.0f);
 
     // Leva ivica staze
     auto left = glm::mat4(1.0f);
@@ -245,39 +169,20 @@ void MainController::draw_track_lines() {
 void MainController::draw_lamps() {
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto lighting = engine::core::Controller::get<LightingController>();
 
     auto shader = resources->shader("lighting");
     auto lamp = resources->model("lamp");
 
     shader->use();
     shader->set_bool("useTexture", true);
-    
-    shader->set_vec3("viewPos", graphics->camera()->Position);
-    shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
 
-    shader->set_mat4("projection", graphics->projection_matrix());
-    shader->set_mat4("view", graphics->camera()->view_matrix());
+    shader->set_mat4("projection",graphics->projection_matrix());
+    shader->set_mat4("view",graphics->camera()->view_matrix());
 
-    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
-    shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
-    shader->set_vec3("dirLight.specular",m_moon_enabled? glm::vec3(0.2f): glm::vec3(0.0f));
+    lighting->apply_lighting(0.2f, 0.3f);
 
-    for (int i = 0; i < NUM_LAMPS; ++i) {
-        const std::string prefix = "pointLights[" + std::to_string(i) + "]";
-        const glm::vec3 light_position = m_lamp_positions[i] + glm::vec3(0.0f, m_lamp_light_height, 0.0f);
-
-        shader->set_vec3(prefix + ".position", light_position);
-        shader->set_vec3(prefix + ".ambient", glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".diffuse", m_lamps_enabled ? glm::vec3(m_lamp_intensity) : glm::vec3(0.0f));
-        shader->set_vec3(prefix + ".specular",m_lamps_enabled? glm::vec3(0.3f): glm::vec3(0.0f));
-
-        shader->set_float(prefix + ".constant", 1.0f);
-        shader->set_float(prefix + ".linear", 0.07f);
-        shader->set_float(prefix + ".quadratic", 0.017f);
-    }
-
-    for (const auto& position : m_lamp_positions) {
+    for (const auto& position : lighting->lamp_positions()) {
         glm::mat4 model(1.0f);
         model = glm::translate(model, position);
         model = glm::scale(model, glm::vec3(1.0f));
