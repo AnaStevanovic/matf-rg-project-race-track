@@ -1,0 +1,217 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 7416,
+      "max": [
+        62.500999450683594,
+        14.501017570495605,
+        14.50100040435791
+      ],
+      "min": [
+        -62.499000549316406,
+        -14.498981475830078,
+        -14.49899959564209
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 88992,
+      "componentType": 5126,
+      "count": 7416,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 7416,
+      "max": [
+        1.0000001192092896,
+        1.0000001192092896
+      ],
+      "min": [
+        -1.1920928955078125e-07,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 41232,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "akerStudio (https://sketchfab.com/akerStudio)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/square-truss-straight-segment-21-f43719b6267645a587a9d3959b5f2d2b",
+      "title": "Square Truss Straight Segment 21"
+    },
+    "generator": "Sketchfab-12.66.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 164928,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 59328,
+      "byteOffset": 164928,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 177984,
+      "byteOffset": 224256,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 402240,
+      "uri": "scene.bin"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "VRAY_ALUMNUM_02",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.6712357374567886,
+          0.6712357374567886,
+          0.6712357374567886,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        7.602807272633072e-13,
+        1.6881623371729653e-28,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.09999999403953552,
+        -3.019916050561733e-08,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.09999999403953552,
+        0.0,
+        -3.019916050561733e-08,
+        -0.09999999403953552,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Square Tru"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        10.00000059604557,
+        -1.3200472310764963e-13,
+        -3.0199160552921205e-06,
+        0.0,
+        -3.0199160552921264e-06,
+        -4.3711390833002285e-07,
+        -10.00000059604555,
+        0.0,
+        9.386807448249269e-21,
+        10.000000596046462,
+        -4.371139083300627e-07,
+        0.0,
+        -0.009999998051103912,
+        -0.010000000633906941,
+        0.01000000452805022,
+        1.0
+      ],
+      "name": "3DSMeshMatrix"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_3"
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}

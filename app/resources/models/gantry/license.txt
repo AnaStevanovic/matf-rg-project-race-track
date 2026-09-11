@@ -1,0 +1,11 @@
+Model Information:
+* title:	Square Truss Straight Segment 21
+* source:	https://sketchfab.com/3d-models/square-truss-straight-segment-21-f43719b6267645a587a9d3959b5f2d2b
+* author:	akerStudio (https://sketchfab.com/akerStudio)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Square Truss Straight Segment 21" (https://sketchfab.com/3d-models/square-truss-straight-segment-21-f43719b6267645a587a9d3959b5f2d2b) by akerStudio (https://sketchfab.com/akerStudio) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

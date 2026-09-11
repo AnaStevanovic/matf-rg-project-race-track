@@ -16,6 +16,14 @@
       "lamp": {
         "path": "lamp/scene.gltf",
         "flip_uvs": true
+      },
+      "starting_lights": {
+        "path": "starting_lights/scene.gltf",
+        "flip_uvs": true
+      },
+      "gantry" : {
+        "path": "gantry/scene.gltf",
+        "flip_uvs": true
       }
     }
   },

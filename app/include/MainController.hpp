@@ -21,6 +21,8 @@ private:
     void draw_track_lines();
     void draw_ferrari();
     void draw_lamps();
+    void draw_starting_lights();
+    void draw_gantry();
 
     bool  m_cursor_enabled = false;
 
