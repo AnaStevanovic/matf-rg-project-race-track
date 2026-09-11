@@ -3,6 +3,7 @@
 //
 #include "MainController.hpp"
 #include "LightingController.hpp"
+#include "RaceController.hpp"
 #include "engine/graphics/GraphicsController.hpp"
 #include <engine/core/Engine.hpp>
 
@@ -49,6 +50,7 @@ void MainController::draw() {
     draw_lamps();
     draw_gantry();
     draw_starting_lights();
+    draw_active_start_lights();
     draw_ferrari();
 }
 
@@ -84,17 +86,19 @@ void MainController::draw_ferrari() {
     auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
     auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
     auto lighting = engine::core::Controller::get<LightingController>();
+    auto race = engine::core::Controller::get<RaceController>();
 
     auto shader = resources->shader("lighting");
     auto ferrari = resources->model("ferrari");
 
     shader->use();
     shader->set_bool("useTexture", true);
+
     shader->set_mat4("projection", graphics->projection_matrix());
     shader->set_mat4("view", graphics->camera()->view_matrix());
-
+    
     auto model = glm::mat4(1.0f);
-    model = glm::translate(model,glm::vec3(0.0f, 0.1f, 0.0f));
+    model = glm::translate(model,glm::vec3(0.0f,0.1f,race->car_z_offset()));
     model = glm::scale(model,glm::vec3(1.5f));
     shader->set_mat4("model", model);
 
@@ -263,6 +267,47 @@ void MainController::draw_gantry() {
     right = glm::scale(right,glm::vec3(0.086f, 0.04f, 0.04f));
     shader->set_mat4("model", right);
     gantry->draw(shader);
+}
+
+void MainController::draw_active_start_lights() {
+    auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+    auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+    auto race = engine::core::Controller::get<RaceController>();
+    auto lighting = engine::core::Controller::get<LightingController>();
+
+    const int active_lights = race->active_start_lights();
+    if (active_lights == 0) return;
+
+    auto shader = resources->shader("lighting");
+    auto light = resources->model("start_light");
+
+    shader->use();
+
+    shader->set_bool("useTexture", false);
+    shader->set_vec3("objectColor",glm::vec3(1.0f, 0.0f, 0.0f));
+
+    shader->set_mat4("projection",graphics->projection_matrix());
+    shader->set_mat4("view",graphics->camera()->view_matrix());
+
+    lighting->apply_lighting(0.0f, 0.0f);
+
+    const float first_light_x = -5.55f;
+    const float light_y = 7.94f;
+    const float light_z = 10.1f;
+
+    const float light_spacing = 2.23f;
+    const float light_scale = 0.44f;
+
+    for (int i = 0; i < active_lights; ++i) {
+        const float x = first_light_x + i * light_spacing;
+
+        glm::mat4 model(1.0f);
+        model = glm::translate(model,glm::vec3(x, light_y, light_z));
+        model = glm::scale(model,glm::vec3(light_scale));
+        shader->set_mat4("model", model);
+
+        light->draw(shader);
+    }
 }
 
 }// namespace app

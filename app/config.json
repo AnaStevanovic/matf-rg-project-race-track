@@ -24,6 +24,10 @@
       "gantry" : {
         "path": "gantry/scene.gltf",
         "flip_uvs": true
+      },
+      "start_light" : {
+        "path": "start_light/start_light.obj",
+        "flip_uvs": false
       }
     }
   },
