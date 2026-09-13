@@ -52,6 +52,8 @@ void MainController::draw() {
     draw_starting_lights();
     draw_active_start_lights();
     draw_ferrari();
+    draw_moon();
+    draw_skybox();
 }
 
 void MainController::end_draw() {
@@ -96,9 +98,9 @@ void MainController::draw_ferrari() {
 
     shader->set_mat4("projection", graphics->projection_matrix());
     shader->set_mat4("view", graphics->camera()->view_matrix());
-    
+
     auto model = glm::mat4(1.0f);
-    model = glm::translate(model,glm::vec3(0.0f,0.1f,race->car_z_offset()));
+    model = glm::translate(model,glm::vec3(0.0f,0.1f, -2.5f + race->car_z_offset()));
     model = glm::scale(model,glm::vec3(1.5f));
     shader->set_mat4("model", model);
 
@@ -167,10 +169,41 @@ void MainController::draw_track_lines() {
 
     // Startna linija
     auto start = glm::mat4(1.0f);
-    start = glm::translate(start,glm::vec3(0.0f, 0.01f, 4.0f));
-    start = glm::scale(start,glm::vec3(15.6f, 1.0f, 0.25f));
+    start = glm::translate(start, glm::vec3(0.0f, 0.01f, 4.0f));
+    start = glm::scale(start, glm::vec3(15.6f, 1.0f, 0.25f));
 
     shader->set_mat4("model", start);
+    strip->draw(shader);
+
+    // Ferrari start box
+    const float box_half_width = 1.75f;
+    const float front_z = 1.15f;
+    const float line_thickness = 0.10f;
+    const float side_length = 1.4f;
+    const float side_x = box_half_width - line_thickness / 2.0f;
+
+    // Prednja linija
+    glm::mat4 box_front(1.0f);
+    box_front = glm::translate(box_front,glm::vec3(0.0f,0.012f,front_z));
+    box_front = glm::scale(box_front,glm::vec3(box_half_width * 2.0f,1.0f,line_thickness));
+
+    shader->set_mat4("model", box_front);
+    strip->draw(shader);
+
+    // Levi krak
+    glm::mat4 box_left(1.0f);
+    box_left = glm::translate(box_left,glm::vec3(-side_x,0.012f,front_z - side_length / 2.0f + line_thickness / 2.0f));
+    box_left = glm::scale(box_left,glm::vec3(line_thickness,1.0f,side_length));
+
+    shader->set_mat4("model", box_left);
+    strip->draw(shader);
+
+    // Desni krak
+    glm::mat4 box_right(1.0f);
+    box_right = glm::translate(box_right,glm::vec3(side_x,0.012f,front_z - side_length / 2.0f + line_thickness / 2.0f));
+    box_right = glm::scale(box_right,glm::vec3(line_thickness,1.0f,side_length));
+
+    shader->set_mat4("model", box_right);
     strip->draw(shader);
 }
 
@@ -308,6 +341,36 @@ void MainController::draw_active_start_lights() {
 
         light->draw(shader);
     }
+}
+
+void MainController::draw_skybox() {
+    auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+    auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+
+    auto shader = resources->shader("skybox");
+    auto skybox = resources->skybox("night");
+
+    graphics->draw_skybox(shader, skybox);
+}
+
+void MainController::draw_moon() {
+    auto graphics = engine::core::Controller::get<engine::graphics::GraphicsController>();
+    auto resources = engine::core::Controller::get<engine::resources::ResourcesController>();
+
+    auto shader = resources->shader("moon");
+    auto moon = resources->model("moon");
+
+    shader->use();
+
+    shader->set_mat4("projection",graphics->projection_matrix());
+    shader->set_mat4("view",graphics->camera()->view_matrix());
+
+    glm::mat4 model(1.0f);
+    model = glm::translate(model,glm::vec3(22.0f, 37.0f, 35.0f));
+    model = glm::scale(model,glm::vec3(0.8f));
+    shader->set_mat4("model", model);
+
+    moon->draw(shader);
 }
 
 }// namespace app

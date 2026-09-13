@@ -24,6 +24,8 @@ private:
     void draw_starting_lights();
     void draw_active_start_lights();
     void draw_gantry();
+    void draw_skybox();
+    void draw_moon();
 
     bool  m_cursor_enabled = false;
 

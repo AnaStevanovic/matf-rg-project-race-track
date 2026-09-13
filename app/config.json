@@ -28,6 +28,10 @@
       "start_light" : {
         "path": "start_light/start_light.obj",
         "flip_uvs": false
+      },
+      "moon" : {
+        "path": "moon/scene.gltf",
+        "flip_uvs": true
       }
     }
   },
