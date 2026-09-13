@@ -67,7 +67,7 @@ void LightingController::apply_lighting(float directional_specular,  float point
     shader->set_vec3("viewPos", graphics->camera()->Position);
     shader->set_vec3("sceneAmbient", glm::vec3(0.05f));
 
-    shader->set_vec3("dirLight.direction",glm::vec3(-0.2f, -1.0f, -0.3f));
+    shader->set_vec3("dirLight.direction",glm::vec3(-0.42f, -0.70f, -0.66f));
     shader->set_vec3("dirLight.ambient", m_moon_enabled ? glm::vec3(0.10f) : glm::vec3(0.0f));
     shader->set_vec3("dirLight.diffuse", m_moon_enabled ? glm::vec3(0.35f) : glm::vec3(0.0f));
     shader->set_vec3("dirLight.specular", m_moon_enabled ? glm::vec3(directional_specular) : glm::vec3(0.0f));

@@ -21,15 +21,15 @@
         "path": "starting_lights/scene.gltf",
         "flip_uvs": true
       },
-      "gantry" : {
+      "gantry": {
         "path": "gantry/scene.gltf",
         "flip_uvs": true
       },
-      "start_light" : {
+      "start_light": {
         "path": "start_light/start_light.obj",
         "flip_uvs": false
       },
-      "moon" : {
+      "moon": {
         "path": "moon/scene.gltf",
         "flip_uvs": true
       }

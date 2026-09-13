@@ -29,7 +29,7 @@ SPACE -> Start the race-start sequence
 
 [x] Model with lighting  
 [x] Two types of lighting (directional light and point lights) with keyboard  controls  
-[x] SPACE --- AFTER 1 SECOND---Triggers---> sequential activation of five red starting lights  ---> AFTER 2 SECONDS ---Triggers---> all starting lights turn off and the Ferrari starts moving
+[x] SPACE --- AFTER 1 SECOND---Triggers---> five red starting lights turn on sequentially, one additional light every second ---> AFTER 2 SECONDS ---Triggers---> all starting lights turn off and the Ferrari starts moving
 
 ### Group A:
 
