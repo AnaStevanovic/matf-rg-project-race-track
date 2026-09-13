@@ -1,22 +1,35 @@
-# {NAME-OF-THE-PROJECT}
+# F1 Night Race - Starting Grid
 
-{INDEX} - {STUDENT-FULL-NAME}  
-{PROJECT DESCRIPTION}
+86/2022 - Ana Stevanović 
+A night Formula 1 starting-grid scene featuring a Ferrari race car, starting lights,
+track-side lamps, a moon and a night sky
 
 ## Controls
 
-{BUTTON1} -> {ACTION1}  
-{BUTTON2} -> {ACTION2}  
-...  
-{BUTTONN} -> {ACTIONN}
+W -> Move camera forward  
+S -> Move camera backward  
+A -> Move camera left   
+D -> Move camera right
+
+Mouse -> Rotate camera  
+Mouse scroll -> Camera zoom   
+
+F1 -> Enable / disable cursor
+ESC -> Exit application
+
+L -> Enable / disable track point lights  
+M -> Enable / disable directional moonlight  
+UP -> Increase point-light intensity  
+DOWN -> Decrease point-light intensity  
+SPACE -> Start the race-start sequence  
 
 ## Features
 
 ### Fundamental:
 
-[ ] Model with lighting
-[ ] Two types of lighting with customizable colors and movement through GUI or ACTIONS
-[ ] {ACTION_X} --- AFTER_M_SECONDS---Triggers---> {EVENT_A} ---> AFTER_N_SECONDS---Triggers---> {EVENT_B}
+[x] Model with lighting  
+[x] Two types of lighting (directional light and point lights) with keyboard  controls  
+[x] SPACE --- AFTER 1 SECOND---Triggers---> five red starting lights turn on sequentially, one additional light every second ---> AFTER 2 SECONDS ---Triggers---> all starting lights turn off and the Ferrari starts moving
 
 ### Group A:
 
@@ -32,16 +45,17 @@
 
 ### Engine improvement:
 
-[ ] ...
+[ ] None
 
 ## Models:
 
-[link1]   
-[link2]
+Ferrari SF1000: https://sketchfab.com/3d-models/2020-f1-ferrari-sf1000-b41d5f1096664601ad1f511ca4cd138f     
+Starting lights: https://sketchfab.com/3d-models/race-track-props-starting-lights-4f3bd911404a4952bedc5c9aa5f5d9e3  
+Metal truss for starting-light gantry: https://sketchfab.com/3d-models/square-truss-straight-segment-21-f43719b6267645a587a9d3959b5f2d2b  
+Moon: https://sketchfab.com/3d-models/low-poly-moon-model-6635db2f892d4b0685e90a885b117664  
+Track-side lamp: https://sketchfab.com/3d-models/lighting-mast-single-model-from-asset-pack-0594bfb94a2c43ecbef30fe28a3831b8  
 
 ## Textures
 
-[link1]  
-[link2]
+Night skybox: https://opengameart.org/content/cloudy-skyboxes-0
 
-{OTHER-RESOURCES}

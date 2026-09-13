@@ -1,11 +1,43 @@
 {
   "resources": {
     "models": {
+      "ferrari": {
+        "path": "ferrari/scene.gltf",
+        "flip_uvs": true
+      },
+      "track": {
+        "path": "track/track.obj",
+        "flip_uvs": false
+      },
+      "strip": {
+        "path": "track/strip.obj",
+        "flip_uvs": false
+      },
+      "lamp": {
+        "path": "lamp/scene.gltf",
+        "flip_uvs": true
+      },
+      "starting_lights": {
+        "path": "starting_lights/scene.gltf",
+        "flip_uvs": true
+      },
+      "gantry": {
+        "path": "gantry/scene.gltf",
+        "flip_uvs": true
+      },
+      "start_light": {
+        "path": "start_light/start_light.obj",
+        "flip_uvs": false
+      },
+      "moon": {
+        "path": "moon/scene.gltf",
+        "flip_uvs": true
+      }
     }
   },
   "window": {
     "height": 600,
-    "title": "Hello, window!",
+    "title": "F1 Night Race",
     "width": 800
   }
 }

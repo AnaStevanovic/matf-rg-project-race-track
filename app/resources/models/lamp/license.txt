@@ -1,0 +1,11 @@
+Model Information:
+* title:	Lighting Mast (Single Model From Asset Pack)
+* source:	https://sketchfab.com/3d-models/lighting-mast-single-model-from-asset-pack-0594bfb94a2c43ecbef30fe28a3831b8
+* author:	Cherk (https://sketchfab.com/alex20010804)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Lighting Mast (Single Model From Asset Pack)" (https://sketchfab.com/3d-models/lighting-mast-single-model-from-asset-pack-0594bfb94a2c43ecbef30fe28a3831b8) by Cherk (https://sketchfab.com/alex20010804) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

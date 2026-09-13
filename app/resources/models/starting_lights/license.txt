@@ -1,0 +1,11 @@
+Model Information:
+* title:	Race Track Props: Starting Lights
+* source:	https://sketchfab.com/3d-models/race-track-props-starting-lights-4f3bd911404a4952bedc5c9aa5f5d9e3
+* author:	formula models maker (https://sketchfab.com/damianrovra379)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Race Track Props: Starting Lights" (https://sketchfab.com/3d-models/race-track-props-starting-lights-4f3bd911404a4952bedc5c9aa5f5d9e3) by formula models maker (https://sketchfab.com/damianrovra379) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
